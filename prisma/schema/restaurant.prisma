@@ -1,0 +1,16 @@
+model Restaurant {
+    id            String    @id @default(uuid(7))
+    name          String    @db.VarChar(255)
+    slag          String    @unique @db.VarChar(255)
+    description   String?   @db.Text
+    address       String?   @db.VarChar(255)
+    contactNumber String?   @db.VarChar(20)
+    email         String?   @db.VarChar(255)
+    bannerImage   String?   @db.VarChar(255)
+    logo          String?   @db.VarChar(255)
+    isActive      Boolean   @default(true)
+    isDeleted     Boolean   @default(false)
+    deletedAt     DateTime?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+}
