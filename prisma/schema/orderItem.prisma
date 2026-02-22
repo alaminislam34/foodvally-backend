@@ -1,0 +1,15 @@
+model OrderItem {
+    id String @id @default(uuid())
+
+    orderId  String
+    foodId   String
+    quantity Int
+    price    Float
+
+    order Order @relation(fields: [orderId], references: [id])
+    food  Food  @relation(fields: [foodId], references: [id])
+
+    @@index([orderId], name: "idx_order_item_orderId")
+    @@index([foodId], name: "idx_order_item_foodId")
+    @@map("order_items")
+}

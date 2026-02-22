@@ -6,8 +6,8 @@ enum UserRole {
 
 enum OrderStatus {
     PENDING
-    ACCEPTED
-    REJECTED
+    READY
+    CANCELLED
     DELIVERED
 }
 

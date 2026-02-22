@@ -1,26 +1,22 @@
 model FoodCategory {
-    id              String    @id @default(uuid())
-    title           String    @db.VarChar(255)
-    slug            String    @unique @db.VarChar(255)
-    icon            String?   @db.VarChar(255)
-    description     String?   @db.Text
-    bannerImage     String?   @db.VarChar(255)
-    isActive        Boolean   @default(true)
-    isDeleted       Boolean   @default(false)
+    id              String      @id @default(uuid())
+    title           String      @db.VarChar(255)
+    slug            String      @unique @db.VarChar(255)
+    icon            String?     @db.VarChar(255)
+    description     String?     @db.Text
+    bannerImage     String?     @db.VarChar(255)
+    isActive        Boolean     @default(true)
+    isDeleted       Boolean     @default(false)
     deletedAt       DateTime?
-    // totalSales      Int      @default(0)
-    // totalItems      Int      @default(0)
-    averageRating   Float?    @default(0)
-    popularityScore Int?      @default(0)
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
+    averageRating   Float?      @default(0)
+    popularityScore Int?        @default(0)
+    createdAt       DateTime    @default(now())
+    updatedAt       DateTime    @updatedAt
+    food            Food[]
+    restaurant      Restaurant? @relation(fields: [restaurantId], references: [id])
+    restaurantId    String?
 
-    // Relations
-    // foods          Food[] // linked foods
-    // subCategories  FoodCategory[] @relation("SubCategories", fields: [], references: [])
-    // parentCategory FoodCategory?  @relation("SubCategories", fields: [parentId], references: [id])
-    // parentId       String?
-    @@index([slug], name: "idx_food_category_slug")
-    @@index([isActive], name: "idx_food_category_is_active")
-    @@map("food_categories")
+    @@index([slug], name: "idx_category_slug")
+    @@index([isActive], name: "idx_category_is_active")
+    @@map("categories")
 }

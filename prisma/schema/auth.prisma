@@ -1,20 +1,24 @@
 model User {
-    id                String     @id
+    id                String      @id
     name              String
     email             String
-    emailVerified     Boolean    @default(false)
+    emailVerified     Boolean     @default(false)
     image             String?
-    role              UserRole   @default(CUSTOMER)
-    status            UserStatus @default(ACTIVE)
-    isDeleted         Boolean    @default(false)
+    role              UserRole    @default(CUSTOMER)
+    status            UserStatus  @default(ACTIVE)
+    isDeleted         Boolean     @default(false)
     deletedAt         DateTime?
-    needPasswordReset Boolean    @default(false)
-    createdAt         DateTime   @default(now())
-    updatedAt         DateTime   @updatedAt
+    needPasswordReset Boolean     @default(false)
+    createdAt         DateTime    @default(now())
+    updatedAt         DateTime    @updatedAt
     sessions          Session[]
     accounts          Account[]
+    restaurant        Restaurant?
+    orders            Order[]
+    reviews           Review[]
 
-    @@unique([email])
+    @@unique([email], name: "idx_user_email")
+    @@index([status], name: "idx_user_status")
     @@map("user")
 }
 

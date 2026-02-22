@@ -1,16 +1,32 @@
 model Restaurant {
-    id            String    @id @default(uuid(7))
-    name          String    @db.VarChar(255)
-    slag          String    @unique @db.VarChar(255)
-    description   String?   @db.Text
-    address       String?   @db.VarChar(255)
-    contactNumber String?   @db.VarChar(20)
-    email         String?   @db.VarChar(255)
-    bannerImage   String?   @db.VarChar(255)
-    logo          String?   @db.VarChar(255)
-    isActive      Boolean   @default(true)
-    isDeleted     Boolean   @default(false)
-    deletedAt     DateTime?
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
+    id             String  @id @default(uuid())
+    userId         String  @unique
+    restaurantName String  @db.VarChar(255)
+    slug           String  @unique @db.VarChar(255)
+    description    String? @db.Text
+    city           String  @db.VarChar(100)
+    address        String
+    contactNumber  String?
+    cuisine        String? @db.VarChar(100)
+    openingHours   String? @db.VarChar(100)
+    logo           String? @db.VarChar(255)
+    coverImage     String? @db.VarChar(255)
+    rating         Float   @default(0)
+    totalOrders    Int     @default(0)
+
+    isVerified Boolean   @default(false)
+    isActive   Boolean   @default(true)
+    isDeleted  Boolean   @default(false)
+    deletedAt  DateTime?
+
+    user  User   @relation(fields: [userId], references: [id])
+    foods Food[]
+
+    createdAt      DateTime       @default(now())
+    updatedAt      DateTime       @updatedAt
+    foodCategories FoodCategory[]
+
+    @@index([isActive], name: "idx_restaurant_is_active")
+    @@index([city], name: "idx_restaurant_city")
+    @@map("restaurants")
 }

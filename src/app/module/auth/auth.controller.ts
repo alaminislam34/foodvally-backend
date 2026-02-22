@@ -15,6 +15,32 @@ const createCustomer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createRestaurant = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body;
+  const result = await AuthService.createRestaurant(payload);
+
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "Restaurant created successfully",
+    data: result,
+  });
+});
+
+const login = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body;
+  const result = await AuthService.login(payload);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Login successful",
+    data: result,
+  });
+});
+
 export const AuthController = {
   createCustomer,
+  createRestaurant,
+  login,
 };

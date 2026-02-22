@@ -1,0 +1,17 @@
+model Review {
+    id      String  @id @default(uuid())
+    userId  String
+    foodId  String
+    rating  Int
+    comment String?
+
+    user User @relation(fields: [userId], references: [id])
+    food Food @relation(fields: [foodId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId])
+    @@index([foodId])
+    @@map("reviews")
+}

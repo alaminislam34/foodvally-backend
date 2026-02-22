@@ -5,6 +5,6 @@ import { CategoryRoutes } from "../module/foodCategory/category.routes";
 const router = Router();
 
 router.use("/auth", AuthRotes);
-router.use("/foodCategories", CategoryRoutes);
+router.use("/food-categories", CategoryRoutes);
 
 export const IndexRoutes = router;
