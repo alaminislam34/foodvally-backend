@@ -1,5 +1,9 @@
+import status from "http-status";
+import { UserRole, UserStatus } from "../../../generated/enums";
+import AppError from "../../errHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
+import { TokenUtils } from "../../utils/token";
 
 const createCustomer = async (payload: ICreateCustomerPayload) => {
   const { name, email, password } = payload;
@@ -22,7 +26,7 @@ const createCustomer = async (payload: ICreateCustomerPayload) => {
 };
 
 const createRestaurant = async (payload: ICreateRestaurantPayload) => {
-  console.log(payload)
+  console.log(payload);
   const data = await auth.api.signUpEmail({
     body: {
       name: payload.user.name,
@@ -102,7 +106,44 @@ const login = async (payload: ISignInPayload) => {
     if (!data.user) {
       throw new Error("Invalid email or password");
     }
-    return data.user;
+
+    if (data.user.status === UserStatus.BLOCKED) {
+      throw new AppError(
+        status.FORBIDDEN,
+        "Your account is blocked. Please contact support.",
+      );
+    }
+    if (data.user.status === UserStatus.DELETED) {
+      throw new AppError(
+        status.GONE,
+        "Your account is deleted. Please contact support.",
+      );
+    }
+    const accessToken = TokenUtils.getAccessToken({
+      userId: data.user.id,
+      name: data.user.name,
+      email: data.user.email,
+      role: data.user.role,
+      status: data.user.status,
+      isdeleted: data.user.isDeleted,
+      emailVerified: data.user.emailVerified,
+    });
+    const refreshToken = TokenUtils.getRefreshToken({
+      userId: data.user.id,
+      name: data.user.name,
+      email: data.user.email,
+      role: data.user.role,
+      status: data.user.status,
+      isdeleted: data.user.isDeleted,
+      emailVerified: data.user.emailVerified,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+      token: data.token,
+      user: data.user,
+    };
   } catch (error) {
     console.log("Login error:", error);
     throw error;

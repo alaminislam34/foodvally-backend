@@ -75,8 +75,25 @@ const deleteUserById = async (id: string) => {
   }
 };
 
+const updateUserById = async (data: any) => {
+  try {
+    const user = await prisma.user.update({
+      where: { email: data.email },
+      data,
+    });
+
+    if (!user) {
+      throw new AppError(status.NOT_FOUND, "User not found");
+    }
+    return user;
+  } catch (error) {
+    throw new AppError(status.INTERNAL_SERVER_ERROR, "Failed to update user");
+  }
+};
+
 export const UserServices = {
   getAllUsers,
   getUserById,
   deleteUserById,
+  updateUserById,
 };
