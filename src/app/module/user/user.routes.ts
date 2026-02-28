@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getUserById);
-router.put("/delete/:id", UserController.deleteUserById);
+router.delete("/:id", UserController.deleteUserById);
 router.put(
   "/:id",
   zodValidation(updateUserZodSchema),

@@ -19,5 +19,6 @@ router.post(
 );
 
 router.post("/login", AuthController.login);
+// router.post("/logout", )
 
 export const AuthRotes = router;

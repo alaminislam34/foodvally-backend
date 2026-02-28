@@ -1,8 +1,10 @@
-<<<<<<< HEAD
 import z from "zod";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
-import { UserRole } from "../../../generated/enums";
+import { UserRole, UserStatus } from "../../../generated/enums";
+import AppError from "../../errHelpers/AppError";
+import status from "http-status";
+import { TokenUtils } from "../../utils/token";
 
 const generateSlug = async (name: string) => {
   let baseSlug = name.toLowerCase().trim().replace(/\s+/g, "-");
@@ -15,14 +17,6 @@ const generateSlug = async (name: string) => {
 
   return slug;
 };
-=======
-import status from "http-status";
-import { UserRole, UserStatus } from "../../../generated/enums";
-import AppError from "../../errHelpers/AppError";
-import { auth } from "../../lib/auth";
-import { prisma } from "../../lib/prisma";
-import { TokenUtils } from "../../utils/token";
->>>>>>> dad5dce35d84736dae97e5646ed3b9510e07fb2a
 
 const createCustomer = async (payload: ICreateCustomerPayload) => {
   const { name, email, password } = payload;
@@ -44,33 +38,7 @@ const createCustomer = async (payload: ICreateCustomerPayload) => {
   }
 };
 
-/*
-{
-  "password": "provider123",
-  "user": {
-    "name": "Provider 2",
-    "email": "provider2@gmail.com",
-    "role": "PROVIDER"
-  },
-  "restaurant": {
-    "restaurantName": "Burger Hub",
-    "city": "Dhaka",
-    "address": "House 12, Road 5, Dhanmondi",
-    "contactNumber": "+8801712345678",
-    "cuisine": "Italian",
-    "openingHours": "10:00 AM - 11:00 PM",
-    "logo": "https://example.com/logo.png",
-    "coverImage": "https://example.com/cover.jpg",
-    "foodCategories": [
-      "bb548d04-007d-4f38-9042-512282492960",
-      "ad771b5d-9e71-4139-bab2-485bfb918cc0"
-    ]
-  }
-}
-*/
-
 const createRestaurant = async (payload: ICreateRestaurantPayload) => {
-<<<<<<< HEAD
   return await prisma.$transaction(async (tx: any) => {
     // 1️⃣ Create User
     const authUser = await auth.api.signUpEmail({
@@ -80,28 +48,6 @@ const createRestaurant = async (payload: ICreateRestaurantPayload) => {
         password: payload.password,
         role: payload.user.role,
       },
-=======
-  console.log(payload);
-  const data = await auth.api.signUpEmail({
-    body: {
-      name: payload.user.name,
-      email: payload.user.email,
-      password: payload.password,
-      role: payload.user.role,
-    },
-  });
-
-  if (!data.user) {
-    throw new Error("Failed to create restaurant user");
-  }
-
-  try {
-    const slug = payload.restaurant.restaurantName
-      .toLowerCase()
-      .replace(/\s+/g, "-");
-    const existingRestaurant = await prisma.restaurant.findUnique({
-      where: { slug },
->>>>>>> dad5dce35d84736dae97e5646ed3b9510e07fb2a
     });
 
     if (!authUser.user) {

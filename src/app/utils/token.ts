@@ -45,7 +45,7 @@ const setBetterAuthSessionCookie = (res: Response, token: string) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 60 * 60 * 60 * 1000, // 7 days
+    maxAge: 60 * 60 * 60 * 24 * 7,
   });
 };
 
